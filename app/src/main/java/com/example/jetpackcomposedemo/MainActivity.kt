@@ -18,9 +18,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.jetpackcomposedemo.components.DrawerView
+import com.example.jetpackcomposedemo.components.HelloContext
+import com.example.jetpackcomposedemo.components.MarqueeText
+import com.example.jetpackcomposedemo.components.RowArtistCard
 import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
 
-
+/**
+ * 声明式编程 它描述目标的性质，让计算机明白目标，而非流程
+ * 声明式编程是告诉计算机需要计算“什么”而不是“如何”去计算
+  任何没有副作用的编程语言，或者更确切一点，任何引用透明的编程语言
+   任何有严格计算逻辑的编程语言
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +40,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TopBar(appTopBarTitle = "123")
+                    Column() {
+                        TopBar(appTopBarTitle = "123"){
+                           finish()
+                        }
+                        MarqueeText(text = "123")
+                        RowArtistCard()
+                        HelloContext()
+                    }
+
+
                    // Greeting("Android")
                 }
             }
@@ -45,7 +63,7 @@ fun Greeting(name: String) {
 }
 
 @Composable
-fun TopBar(appTopBarTitle:String){
+fun TopBar(appTopBarTitle:String,call:()->Unit){
     //
     val context = LocalContext.current
     TopAppBar(
@@ -61,7 +79,9 @@ fun TopBar(appTopBarTitle:String){
 
                 Icon( Icons.Filled.ArrowBack, null, tint = Color.White )
             }
-        }, modifier = Modifier.fillMaxWidth().height(48.dp)
+        }, modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
        , actions = {
            //其它按钮 相当于是ToolBar 菜单 菜单
 
@@ -73,7 +93,13 @@ fun TopBar(appTopBarTitle:String){
 @Composable
 fun DefaultPreview() {
     JetpackComposeDemoTheme(darkTheme = true) {
+        Column() {
+            TopBar(appTopBarTitle = "这是标题如果很长看要怎么显示"){
+
+            }
+            HelloContext()
+        }
       //  Greeting("Android")
-        TopBar(appTopBarTitle = "这是标题如果很长看要怎么显示")
+
     }
 }
