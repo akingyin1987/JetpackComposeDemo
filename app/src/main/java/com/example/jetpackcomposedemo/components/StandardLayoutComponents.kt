@@ -37,15 +37,17 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.PermissionChecker
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.target.ImageViewTarget
 import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionRequired
 import com.google.accompanist.permissions.rememberPermissionState
 import com.example.jetpackcomposedemo.R
+import com.google.accompanist.permissions.isGranted
+
 /**
  *  标准布局组件
  * @Description:
@@ -80,7 +82,7 @@ import com.example.jetpackcomposedemo.R
         }
     }
 
-    @OptIn(ExperimentalPermissionsApi::class)
+
     @Composable
     fun RowArtistCard(){
         val context = LocalContext.current
@@ -156,12 +158,13 @@ import com.example.jetpackcomposedemo.R
             onResult = { if (it) imageUir.value = mCameraUri })
         // 定义 Permission State
         val permissionState = rememberPermissionState(Manifest.permission.CAMERA)
-        PermissionRequired(
-            permissionState = permissionState,
-            permissionNotGrantedContent = { /*TODO*/ },
-            permissionNotAvailableContent = { /*TODO*/ }) {
-            //调用权限获取之后功能 "可以打开相机"
-        }
+
+//        PermissionRequired(
+//            permissionState = permissionState,
+//            permissionNotGrantedContent = { /*TODO*/ },
+//            permissionNotAvailableContent = { /*TODO*/ }) {
+//            //调用权限获取之后功能 "可以打开相机"
+//        }
         Column(modifier = Modifier
             .fillMaxSize()
             .background(color = colorResource(id = R.color.white))
@@ -176,7 +179,7 @@ import com.example.jetpackcomposedemo.R
                     .border(1.dp, Color.Black)
                     .clip(CircleShape)
                     .clickable {
-                        if (permissionState.hasPermission) {
+                        if (permissionState.status.isGranted) {
                             //当前有拍照权限
                             mCameraUri = context.contentResolver.insert(
                                 if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) MediaStore.Images.Media.EXTERNAL_CONTENT_URI else MediaStore.Images.Media.INTERNAL_CONTENT_URI,
