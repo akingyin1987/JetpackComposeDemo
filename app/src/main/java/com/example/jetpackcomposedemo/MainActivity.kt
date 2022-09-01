@@ -18,10 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.jetpackcomposedemo.components.DrawerView
-import com.example.jetpackcomposedemo.components.HelloContext
-import com.example.jetpackcomposedemo.components.MarqueeText
-import com.example.jetpackcomposedemo.components.RowArtistCard
+import com.example.jetpackcomposedemo.components.*
 import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
 
 /**
@@ -40,14 +37,19 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column() {
-                        TopBar(appTopBarTitle = "123"){
-                           finish()
-                        }
-                        MarqueeText(text = "123")
-                        RowArtistCard()
-                        HelloContext()
+                    LoginCompose {
+
                     }
+                   // RowArtistCard()
+                   // ScaffoldCompose()
+//                    Column() {
+//                        TopBar(appTopBarTitle = "123"){
+//                           finish()
+//                        }
+//                        MarqueeText(text = "123")
+//                        RowArtistCard()
+//                        HelloContext()
+//                    }
 
 
                    // Greeting("Android")
@@ -93,12 +95,14 @@ fun TopBar(appTopBarTitle:String,call:()->Unit){
 @Composable
 fun DefaultPreview() {
     JetpackComposeDemoTheme(darkTheme = true) {
-        Column() {
-            TopBar(appTopBarTitle = "这是标题如果很长看要怎么显示"){
-
-            }
-            HelloContext()
-        }
+        RowArtistCard()
+       // ScaffoldCompose()
+//        Column() {
+//            TopBar(appTopBarTitle = "这是标题"){
+//
+//            }
+//            HelloContext()
+//        }
       //  Greeting("Android")
 
     }

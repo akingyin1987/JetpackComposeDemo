@@ -1,12 +1,12 @@
 package com.example.jetpackcomposedemo.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Colors
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -36,7 +36,9 @@ import androidx.compose.ui.unit.dp
  * @Version: 1.0
  */
 class TextCompose {
-
+    /**
+     * padding 在元素周围留出空间
+     */
     @Composable
     fun textComposeDemo() {
         var text by remember { mutableStateOf("") }
@@ -162,6 +164,25 @@ class TextCompose {
                     }
                 })
 
+            }
+
+            //padding 放在背景色的后面
+            Row( modifier = Modifier
+                .border(1.dp, Color.Black)
+                .padding(3.dp).fillMaxWidth()) {
+                Text(text = "padding", modifier = Modifier.fillMaxWidth().padding(10.dp).background(Color.Green))
+            }
+            //padding 放在背景色的前面 相当于margin
+            Row( modifier = Modifier
+                .border(1.dp, Color.Black)
+                .padding(3.dp).fillMaxWidth()) {
+                Text(text = "padding=margin", modifier = Modifier.fillMaxWidth().padding(10.dp).background(Color.Green).padding(10.dp))
+            }
+            //padding放在了设置宽高之前，所以呈现出来的就有了上面的类似于android xml中的margin效果，这里可以这样来理解：
+            Row( modifier = Modifier
+                .border(1.dp, Color.Black)
+                .padding(2.dp).fillMaxWidth()) {
+                Text(text = "padding设置在宽高之前", modifier = Modifier.padding(10.dp).fillMaxWidth().border(1.dp,Color.Black))
             }
         }
 
