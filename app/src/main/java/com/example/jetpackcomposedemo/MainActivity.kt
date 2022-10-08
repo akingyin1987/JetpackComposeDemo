@@ -18,8 +18,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jetpackcomposedemo.components.*
 import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
+import com.example.jetpackcomposedemo.viewmodel.EditViewModel
+import com.example.jetpackcomposedemo.vo.User
+import java.util.*
 
 /**
  * 声明式编程 它描述目标的性质，让计算机明白目标，而非流程
@@ -37,9 +42,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginCompose {
-
-                    }
+                    DrawerCompose()
+//                   val viewModel = viewModel<EditViewModel>( )
+//
+//                    EditCompose(viewModel){
+//                        println("user=${viewModel.userLiveData.value?.name}")
+//                    }
                    // RowArtistCard()
                    // ScaffoldCompose()
 //                    Column() {
