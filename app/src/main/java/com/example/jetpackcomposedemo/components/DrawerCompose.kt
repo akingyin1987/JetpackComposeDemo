@@ -94,12 +94,6 @@ fun DrawerCompose() {
 }
 
 
-sealed class DrawerItemFlag(var  itemLabel:String,@DrawableRes var iconResourceId:Int){
-    object UserInfo : DrawerItemFlag("用户信息", R.drawable.ic_baseline_account_box_24)
-    object Setting:DrawerItemFlag("应用设置",R.drawable.ic_baseline_settings_applications_24)
-    object AppUpload:DrawerItemFlag("数据上传",R.drawable.ic_baseline_cloud_upload_24)
-    object Empty:DrawerItemFlag("",R.drawable.placeholder)
-}
 
 /**
  * 抽屉布局
@@ -135,6 +129,7 @@ private fun DrawerHeader(
     onPhotograph: (String) -> Unit
 ) {
     val context = LocalContext.current
+
     var mCameraUri by remember {
         mutableStateOf<Uri>(Uri.EMPTY)
     }

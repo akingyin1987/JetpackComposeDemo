@@ -9,9 +9,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
@@ -24,8 +26,10 @@ import androidx.compose.ui.graphics.StrokeCap
 
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
 
 
@@ -39,6 +43,31 @@ import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
  * @UpdateRemark: 更新说明
  * @Version: 1.0
  */
+@Composable
+private fun ArcProgress2(progress: Int,total:Int){
+    val animateAngle = (progress.toFloat()/total) *360
+    val primary = Color.Red
+    Box(modifier = Modifier
+        .width(105.dp)
+        .height(105.dp), contentAlignment = Alignment.Center ){
+        Canvas(modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .padding(5.dp)){
+            drawArc(startAngle = 180F+animateAngle, sweepAngle = 360F-animateAngle, useCenter = false, color = Color.Green, style = Stroke(width = 5F, cap = StrokeCap.Round, miter = 1f))
+            drawArc(startAngle = 180F, useCenter = false, sweepAngle = animateAngle,color = primary, style = Stroke(width = 5F, cap = StrokeCap.Round, miter = 1f))
+
+        }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "任务进度", color = MaterialTheme.colorScheme.primary, fontSize = 18.sp)
+            Text(text = "$progress/$total", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
+        }
+
+    }
+}
+
+
+
 
 @Composable
 fun ArcProgress(modifier: Modifier,arcProgressData: ArcProgressData){
@@ -50,20 +79,45 @@ fun ArcProgress(modifier: Modifier,arcProgressData: ArcProgressData){
         )
     )
 
-    var currentProgress by remember {
+    val currentProgress by remember {
         mutableStateOf(1F)
     }
 
-    Text(text = "测试", color = Color.Black, modifier = Modifier.size(100.dp).drawWithContent {
+    Text(text = "测试", color = Color.Black, modifier = Modifier
+        .size(100.dp)
+        .drawWithContent {
+            // drawContent()
+            drawCircle(color = Color.Blue, style = Stroke(width = 5F))
+            drawContent()
+        })
+    Text(text = "测试2", color = Color.Black, modifier = Modifier
+        .padding(18.dp)
+        .drawBehind {
 
-        drawCircle(color = Color.Blue, style = Stroke(width = 5F) )
-        drawContent()
-    })
-    Text(text = "测试2", color = Color.Black, modifier = Modifier.padding(18.dp).drawBehind {
+            drawCircle(
+                color = Color.Red,
+                18.dp.toPx() / 2,
+                center = Offset(drawContext.size.width, 0f)
+            )
 
-        drawCircle(color = Color.Red, 18.dp.toPx()/2,center= Offset(drawContext.size.width,0f) )
 
-    }.border(3.dp, color = Color.Black))
+        }
+        .border(3.dp, color = Color.Black))
+    Box(modifier = Modifier
+        .size(40.dp)
+        .drawWithContent {
+            // drawContent()
+            drawCircle(
+                color = Color.Red,
+                radius = 40.dp.toPx() / 2,
+                center = Offset(drawContext.size.width / 2, drawContext.size.height / 2)
+            )
+            // 先绘制内容后绘制自定义图形，这样我们绘制的图形将显示在内容区域上方
+            drawContent()
+        }, contentAlignment = Alignment.Center){
+        Text(text = "1", color = Color.White, textAlign = TextAlign.Center)
+    }
+
     Canvas(modifier = modifier ){
       //  drawArc()
       //  val rectF = Rect(arcProgressData.strokeWidth.value/2F,arcProgressData.strokeWidth.value/2F,size.width - arcProgressData.strokeWidth.value/2F,size.height-arcProgressData.strokeWidth.value/2F)
@@ -96,6 +150,20 @@ fun ArcProgress(modifier: Modifier,arcProgressData: ArcProgressData){
        
     }
 }
+//// 方法一
+//fun DrawScope.drawText(
+//    textMeasurer: TextMeasurer,
+//    text: String,
+//    topLeft: Offset = Offset.Zero,
+//    style: TextStyle = TextStyle.Default,
+//    overflow: TextOverflow = TextOverflow.Clip,
+//    softWrap: Boolean = true,
+//    maxLines: Int = Int.MAX_VALUE,
+//    size: IntSize = IntSize(
+//        width = kotlin.math.ceil(this.size.width).roundToInt(),
+//        height = kotlin.math.ceil(this.size.height).roundToInt()
+//    )
+//){}
 
 
 @Preview
@@ -104,9 +172,7 @@ fun ArcProgressPreview(){
     JetpackComposeDemoTheme {
         Surface(modifier = Modifier.fillMaxWidth()){
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                ArcProgress(modifier = Modifier
-                    .width(100.dp)
-                    .height(100.dp), arcProgressData = ArcProgressData())
+                ArcProgress2(10,100)
             }
 
         }

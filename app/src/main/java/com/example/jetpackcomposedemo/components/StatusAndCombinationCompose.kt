@@ -32,7 +32,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.jetpackcomposedemo.ui.theme.Purple80
+
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
@@ -212,7 +212,7 @@ fun Content(call:()->Unit) {
             .fillMaxSize()
             .background(Color.White)
     ) {
-        Text(text = "Content", color = Purple80, modifier = Modifier.clickable {
+        Text(text = "Content", color = MaterialTheme.colors.primary, modifier = Modifier.clickable {
             call.invoke()
         })
     }
