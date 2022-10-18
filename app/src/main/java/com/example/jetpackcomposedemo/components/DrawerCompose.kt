@@ -7,7 +7,6 @@ import android.os.Build
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -251,7 +250,7 @@ private fun DrawerItem(modifier: Modifier=Modifier,label:String,painter: Painter
             .padding(10.dp)
             .clickable { onClick() }){
 
-        Icon(painter = painter, contentDescription = null, tint = color)
+        androidx.compose.material3.Icon(painter = painter, contentDescription = null, tint = color)
         Spacer(modifier = Modifier.width(16.dp))
         Text(text = label, style = androidx.compose.material.MaterialTheme.typography.body2, color = color)
 

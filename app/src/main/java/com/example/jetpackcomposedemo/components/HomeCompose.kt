@@ -1,6 +1,7 @@
 package com.example.jetpackcomposedemo.components
 
 import android.content.Context
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
@@ -38,6 +39,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.UiMode
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -47,6 +49,8 @@ import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.jetpackcomposedemo.R
+import com.example.jetpackcomposedemo.ui.theme.ComposeCookBookTheme
+import com.example.jetpackcomposedemo.ui.theme.seed
 import kotlinx.coroutines.launch
 import java.text.MessageFormat
 
@@ -220,8 +224,8 @@ private fun ShowEditMyTelDialog(oldTel:String,call:(String)->Unit){
  */
 @Composable
 private fun DrawerItem(modifier: Modifier=Modifier, label:String, painter: Painter,
-                       tintColor:Color = MaterialTheme.colorScheme.primary, isSelected:Boolean = false, onClick:()->Unit){
-    val color  = if(isSelected) tintColor else MaterialTheme.colorScheme.onSurface
+                       tintColor:Color = seed, isSelected:Boolean = false, onClick:()->Unit){
+    val color  = if(isSelected) tintColor else contentColorFor(backgroundColor = MaterialTheme.colorScheme.onBackground)
     Row (horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
@@ -257,7 +261,7 @@ sealed class DrawerItemFlag(var  itemLabel:String,@DrawableRes var iconResourceI
  * @param closeDrawer Function1<DrawerItemFlag, Unit>
  */
 @Composable
-private fun DrawerContext(projectName: String,currentAppTime:String,loginTime:String,modifier: Modifier=Modifier,currentItemFlag:DrawerItemFlag=DrawerItemFlag.Empty,closeDrawer:(DrawerItemFlag)->Unit,onShareUserInfo:()->Unit,onPhotograph:(String)->Unit){
+private fun DrawerContext(projectName: String,currentAppTime:String,loginTime:String,modifier: Modifier=Modifier,currentItemFlag:DrawerItemFlag,closeDrawer:(DrawerItemFlag)->Unit,onShareUserInfo:()->Unit,onPhotograph:(String)->Unit){
 
     Column(modifier = modifier.fillMaxWidth()) {
         HomeDrawerHeader( projectName = projectName,  loginTime = loginTime, onShareUserInfo = onShareUserInfo, onPhotograph = onPhotograph)
@@ -297,18 +301,18 @@ private fun  HomeHeader(totalJob:Int,progress:Int,onHomeEvent:(HomeEvent)->Unit)
     Row(modifier = Modifier
         .fillMaxWidth()
         .height(130.dp)
-        .border(1.dp, MaterialTheme.colorScheme.secondary)
-        .background(MaterialTheme.colorScheme.primary), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceAround) {
+        .background(MaterialTheme.colorScheme.surfaceVariant)
+        , verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceAround) {
 
         Button(onClick = {
 
-        },
+        }, colors =ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surfaceVariant) ,
             modifier = Modifier
                 .padding(start = 20.dp)
-                ,elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp, pressedElevation = 3.dp), colors =ButtonDefaults.buttonColors(containerColor=MaterialTheme.colorScheme.surfaceTint) , shape = RoundedCornerShape(3.dp)) {
+                ,elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp, pressedElevation = 3.dp) , shape = RoundedCornerShape(3.dp)) {
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "扫二维码", color = MaterialTheme.colorScheme.background)
-                Icon(imageVector = Icons.Default.QrCodeScanner, contentDescription =null, tint = MaterialTheme.colorScheme.background,modifier = Modifier.padding(top=5.dp) )
+                Text(text = "扫二维码", color = contentColorFor(MaterialTheme.colorScheme.surfaceVariant))
+                Icon(imageVector = Icons.Default.QrCodeScanner, contentDescription =null,modifier = Modifier.padding(top=5.dp),tint = MaterialTheme.colorScheme.primary )
             }
         }
         ArcProgress(progress = progress, total = totalJob,
@@ -338,7 +342,7 @@ private fun  HomeHeader(totalJob:Int,progress:Int,onHomeEvent:(HomeEvent)->Unit)
 @Composable
  fun ArcProgress(modifier: Modifier=Modifier,progress: Int,total:Int,onClick: () -> Unit){
     val animateAngle = (progress.toFloat()/total) *360
-    val primary = MaterialTheme.colorScheme.onPrimaryContainer
+    val primary = seed
     Box(modifier = modifier
         .width(105.dp)
         .height(105.dp)
@@ -354,8 +358,8 @@ private fun  HomeHeader(totalJob:Int,progress:Int,onHomeEvent:(HomeEvent)->Unit)
 
         }
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "任务进度", color = MaterialTheme.colorScheme.background, fontSize = 18.sp)
-            Text(text = "$progress/$total", color = MaterialTheme.colorScheme.background, fontSize = 12.sp)
+            Text(text = "任务进度", color = contentColorFor(backgroundColor = MaterialTheme.colorScheme.background), fontSize = 18.sp)
+            Text(text = "$progress/$total", color = contentColorFor(backgroundColor = MaterialTheme.colorScheme.background), fontSize = 12.sp)
         }
 
     }
@@ -373,7 +377,7 @@ fun FunctionItem(funVo:FunVo,modifier: Modifier,onClick: (FunVo) -> Unit){
             .clickable {
                 onClick.invoke(funVo)
             }
-    , shape = RoundedCornerShape(8.dp)
+    , shape = RoundedCornerShape(8.dp),elevation=CardDefaults.cardElevation(4.dp), colors = CardDefaults.cardColors()
     ) {
         ConstraintLayout(modifier = Modifier
 
@@ -422,14 +426,15 @@ fun FunctionItem(funVo:FunVo,modifier: Modifier,onClick: (FunVo) -> Unit){
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(uiMode =UI_MODE_NIGHT_YES , apiLevel = 33, showBackground = true)
+
 @Composable
 fun HomeScreenCompose() {
+
     val scope = rememberCoroutineScope()
 
     val state = rememberLazyGridState()
 
-    val drawerState = rememberDrawerState(initialValue = androidx.compose.material3.DrawerValue.Closed)
+    val drawerState = androidx.compose.material.rememberDrawerState(initialValue = DrawerValue.Closed)
 
     val currentFlag:MutableState<DrawerItemFlag> = remember { mutableStateOf(DrawerItemFlag.Empty) }
 
@@ -443,40 +448,45 @@ fun HomeScreenCompose() {
     Column(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()) {
+
         SmallTopAppBar(modifier = Modifier.shadow(2.dp), title = {
-            Text(text = "抄表", style = MaterialTheme.typography.titleSmall)
+            Text(text = "抄表", style = MaterialTheme.typography.titleLarge)
         }, navigationIcon = {
-            androidx.compose.material3.Icon(imageVector = if(drawerState.isOpen)Icons.Default.MenuOpen else Icons.Default.Menu, contentDescription ="" , modifier = Modifier
-                .fillMaxHeight()
-                .padding(4.dp)
-                .clickable {
-                    scope.launch {
-                        if (drawerState.isOpen) {
-                            drawerState.close()
-                        } else {
+            IconButton(onClick = {
+                scope.launch {
+                if (drawerState.isOpen) {
+                    drawerState.close()
+                } else {
 
 
-                            drawerState.open()
-                        }
-                    }
-                })
+                    drawerState.open()
+                }
+            } }) {
+                androidx.compose.material3.Icon(imageVector = if(drawerState.isOpen)Icons.Default.MenuOpen else Icons.Default.Menu, contentDescription ="" , modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(4.dp)
+                    )
+            }
+
         }, actions = {
-            androidx.compose.material3.Icon(imageVector = Icons.Default.Settings, contentDescription = null, modifier = Modifier.clickable {
+            IconButton(onClick = {  }) {
+                androidx.compose.material3.Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+            }
 
-              })
-            })
+            }, colors = TopAppBarDefaults.smallTopAppBarColors())
 
 
 
-        ModalNavigationDrawer(drawerContent = {
+        ModalDrawer(drawerContent = {
 
 
             DrawerContext(
                projectName ="项目名称" ,
                currentAppTime ="登录时间1" ,
                loginTime = "登录时间2",
+               currentItemFlag = currentFlag.value,
                closeDrawer ={
-                    currentFlag.value = it
+                    currentFlag.value =it
                     scope.launch {
                         drawerState.close()
                     }
@@ -494,7 +504,7 @@ fun HomeScreenCompose() {
 
 
 
-               LazyVerticalGrid(modifier = Modifier
+               LazyVerticalGrid(modifier = Modifier.padding(top = 4.dp)
                  , columns = GridCells.Fixed(3), state = state,
                    horizontalArrangement = Arrangement.spacedBy(5.dp),
                    verticalArrangement = Arrangement.spacedBy(5.dp)
@@ -511,6 +521,71 @@ fun HomeScreenCompose() {
 
            }
         }
+    }
+}
+
+
+
+@Preview(name = "home in light theme", uiMode = UI_MODE_NIGHT_NO)
+@Preview(name = "home in dark theme", uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun HomeScreenComposePreview(){
+    ComposeCookBookTheme {
+        val  listData by remember {
+            mutableStateOf(List(10) {
+                FunVo(title = "测试${it}", number = it)
+            })
+        }
+        val state = rememberLazyGridState()
+        androidx.compose.material.Scaffold(topBar = {
+            TopAppBar(
+                title = { Text(text = "Instagram") },
+                backgroundColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onSurface,
+                elevation = 8.dp,
+                navigationIcon = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Send,
+                            contentDescription = "Go to messaging screen",
+                        )
+                    }
+                }
+            )
+        }, content = {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(it)
+                .fillMaxHeight()) {
+                HomeHeader(100,90){}
+
+
+
+                LazyVerticalGrid(modifier = Modifier
+                    , columns = GridCells.Fixed(3), state = state,
+                    horizontalArrangement = Arrangement.spacedBy(5.dp),
+                    verticalArrangement = Arrangement.spacedBy(5.dp)
+                ){
+                    items(listData.size, key = {item -> item }){ item ->
+
+                        FunctionItem(listData[item], modifier = Modifier){funVo->
+
+                        }
+
+                    }
+
+                }
+
+            }
+        })
     }
 }
 
