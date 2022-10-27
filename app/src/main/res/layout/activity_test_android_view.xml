@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+         <variable
+             name="viewModel"
+             type="com.example.jetpackcomposedemo.viewmodel.EditViewModel" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/Widget.AppCompat.Toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                app:title="注意事项-位置"
+
+                app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+                app:elevation="4dp" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_text"
+            android:text="@{`动态数据=`+viewModel.userLiveData.name}"
+            android:textColor="@android:color/holo_red_dark"
+            tools:text="123" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_text1"
+            android:text="@{viewModel.mutableStateFlow}"
+            tools:text="123" />
+
+        <EditText
+            android:id="@+id/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@={viewModel.mutableStateFlow}"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn1"
+            android:onClick="@{()->viewModel.cleanUserName()}"
+            android:text="测试1" />
+
+    </LinearLayout>
+</layout>

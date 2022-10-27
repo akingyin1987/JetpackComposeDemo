@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.jetpackcomposedemo.vo.User
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  *
@@ -21,6 +22,8 @@ class EditViewModel : ViewModel() {
 
     val  userLiveData  = MutableLiveData(User())
 
+    val  mutableStateFlow = MutableStateFlow("123")
+
     var  userState by mutableStateOf(User())
 
 
@@ -34,5 +37,12 @@ class EditViewModel : ViewModel() {
 
     fun  onChangeAccount(account:String){
         userState = User(account,userState.passWord)
+    }
+
+    fun  cleanUserName(){
+        userLiveData.value?.let {
+            it.name =""
+            userLiveData.value = it
+        }
     }
 }

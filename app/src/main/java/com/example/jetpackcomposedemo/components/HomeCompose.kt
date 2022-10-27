@@ -39,7 +39,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.UiMode
+
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -354,8 +354,8 @@ private fun  HomeHeader(totalJob:Int,progress:Int,onHomeEvent:(HomeEvent)->Unit)
 
             drawArc(startAngle = 180F+animateAngle, useCenter = false, sweepAngle = 360F-animateAngle,color = Color.White, style = Stroke(width = 10F, cap = StrokeCap.Round, miter = 1f))
             if(animateAngle>0){
-                drawArc(startAngle = 180F, sweepAngle = animateAngle, useCenter = false, color = primary, style = Stroke(width = 10F, cap = StrokeCap.Round, miter = 1f)) }
-
+                drawArc(startAngle = 180F, sweepAngle = animateAngle, useCenter = false, color = primary, style = Stroke(width = 10F, cap = StrokeCap.Round, miter = 1f))
+            }
         }
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = "任务进度", color = contentColorFor(backgroundColor = MaterialTheme.colorScheme.background), fontSize = 18.sp)
@@ -368,6 +368,7 @@ private fun  HomeHeader(totalJob:Int,progress:Int,onHomeEvent:(HomeEvent)->Unit)
 data class FunVo(var title:String,var icon:Int=R.drawable.ic_baseline_cloud_upload_24,var number:Int)
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FunctionItem(funVo:FunVo,modifier: Modifier,onClick: (FunVo) -> Unit){
     Card(
@@ -450,7 +451,11 @@ fun HomeScreenCompose() {
         .fillMaxHeight()) {
 
         SmallTopAppBar(modifier = Modifier.shadow(2.dp), title = {
-            Text(text = "抄表", style = MaterialTheme.typography.titleLarge)
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(text = "抄表", style = MaterialTheme.typography.titleLarge)
+                Text(text = "抄表", style = MaterialTheme.typography.titleLarge)
+            }
+
         }, navigationIcon = {
             IconButton(onClick = {
                 scope.launch {
@@ -473,7 +478,7 @@ fun HomeScreenCompose() {
                 androidx.compose.material3.Icon(imageVector = Icons.Default.Settings, contentDescription = null)
             }
 
-            }, colors = TopAppBarDefaults.smallTopAppBarColors())
+            }, colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.87F)))
 
 
 
@@ -498,6 +503,7 @@ fun HomeScreenCompose() {
 
         },  gesturesEnabled = false, drawerState =drawerState) {
            Column(modifier = Modifier
+               .safeDrawingPadding()
                .fillMaxWidth()
                .fillMaxHeight()) {
                HomeHeader(100,90){}
@@ -539,7 +545,12 @@ fun HomeScreenComposePreview(){
         val state = rememberLazyGridState()
         androidx.compose.material.Scaffold(topBar = {
             TopAppBar(
-                title = { Text(text = "Instagram") },
+                title = {
+                        Column {
+                            Text(text = "Instagram")
+                            Text(text = "Instagram2")
+                        }
+                },
                 backgroundColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onSurface,
                 elevation = 8.dp,

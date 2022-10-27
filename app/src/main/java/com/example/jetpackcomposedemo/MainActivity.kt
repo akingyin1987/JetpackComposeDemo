@@ -2,6 +2,8 @@ package com.example.jetpackcomposedemo
 
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,10 +20,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidViewBinding
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jetpackcomposedemo.components.*
+import com.example.jetpackcomposedemo.databinding.ActivityTestAndroidViewBinding
 import com.example.jetpackcomposedemo.ui.theme.ComposeCookBookTheme
 
 import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
+import com.example.jetpackcomposedemo.viewmodel.EditViewModel
 
 /**
  * 声明式编程 它描述目标的性质，让计算机明白目标，而非流程
@@ -34,8 +40,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JetpackComposeDemoTheme {
+                val editViewModel:EditViewModel = viewModel()
 
-                HomeScreenCompose()
+                AndroidViewBinding(factory = { inflater, parent, attachToParent->
+                    ActivityTestAndroidViewBinding.inflate(inflater,parent,attachToParent).also {
+                        it.viewModel = editViewModel
+                        it.lifecycleOwner = this
+                    }
+                }, update = {
+
+                })
+              //  HomeScreenCompose()
             }
         }
     }
