@@ -3,12 +3,11 @@ package com.example.jetpackcomposedemo.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -52,6 +51,22 @@ class TextCompose {
         Column(modifier = Modifier.border(1.dp, Color.Black)) {
             //列，即可看成纵向布局
 
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(42.dp)
+                .border(2.dp, Color.Black, RoundedCornerShape(3.dp)), contentAlignment = Alignment.Center){
+                Text(text = "居中1", textAlign = TextAlign.Center)
+            }
+
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                Text(text = "第1项")
+                Text(text = "第2项")
+                Text(text = "第3项")
+            }
+
+            
             Row {
                 //行， 即可看成横向布局
                 Text("默认")
@@ -169,20 +184,33 @@ class TextCompose {
             //padding 放在背景色的后面
             Row( modifier = Modifier
                 .border(1.dp, Color.Black)
-                .padding(3.dp).fillMaxWidth()) {
-                Text(text = "padding", modifier = Modifier.fillMaxWidth().padding(10.dp).background(Color.Green))
+                .padding(3.dp)
+                .fillMaxWidth()) {
+                Text(text = "padding", modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .background(Color.Green))
             }
             //padding 放在背景色的前面 相当于margin
             Row( modifier = Modifier
                 .border(1.dp, Color.Black)
-                .padding(3.dp).fillMaxWidth()) {
-                Text(text = "padding=margin", modifier = Modifier.fillMaxWidth().padding(10.dp).background(Color.Green).padding(10.dp))
+                .padding(3.dp)
+                .fillMaxWidth()) {
+                Text(text = "padding=margin", modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .background(Color.Green)
+                    .padding(10.dp))
             }
             //padding放在了设置宽高之前，所以呈现出来的就有了上面的类似于android xml中的margin效果，这里可以这样来理解：
             Row( modifier = Modifier
                 .border(1.dp, Color.Black)
-                .padding(2.dp).fillMaxWidth()) {
-                Text(text = "padding设置在宽高之前", modifier = Modifier.padding(10.dp).fillMaxWidth().border(1.dp,Color.Black))
+                .padding(2.dp)
+                .fillMaxWidth()) {
+                Text(text = "padding设置在宽高之前", modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
+                    .border(1.dp, Color.Black))
             }
         }
 

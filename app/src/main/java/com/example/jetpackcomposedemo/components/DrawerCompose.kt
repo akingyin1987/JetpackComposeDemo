@@ -12,6 +12,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -32,6 +33,7 @@ import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.jetpackcomposedemo.R
+import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -52,7 +54,7 @@ import java.util.UUID
  */
 
 
-@Preview
+
 @Composable
 fun DrawerCompose() {
     val scope = rememberCoroutineScope()
@@ -64,15 +66,19 @@ fun DrawerCompose() {
         .fillMaxWidth()
         .fillMaxHeight()) {
         TopAppBar(title = { Text(text = "测试", color = MaterialTheme.colorScheme.background, fontSize = 18.sp)}, navigationIcon = {
-            Icon(painter = painterResource(id = if(drawerState.isClosed) R.drawable.ic_baseline_menu_24 else R.drawable.ic_baseline_menu_open_24), tint =  MaterialTheme.colorScheme.background, contentDescription ="" , modifier = Modifier.fillMaxHeight().width(40.dp).padding(4.dp).clickable {
-                scope.launch {
-                    if(drawerState.isOpen){
-                        drawerState.close()
-                    }else{
-                        drawerState.open()
+            Icon(painter = painterResource(id = if(drawerState.isClosed) R.drawable.ic_baseline_menu_24 else R.drawable.ic_baseline_menu_open_24), tint =  MaterialTheme.colorScheme.background, contentDescription ="" , modifier = Modifier
+                .fillMaxHeight()
+                .width(40.dp)
+                .padding(4.dp)
+                .clickable {
+                    scope.launch {
+                        if (drawerState.isOpen) {
+                            drawerState.close()
+                        } else {
+                            drawerState.open()
+                        }
                     }
-                }
-            })
+                })
         }, backgroundColor = MaterialTheme.colorScheme.primary)
 
 
@@ -250,10 +256,121 @@ private fun DrawerItem(modifier: Modifier=Modifier,label:String,painter: Painter
             .padding(10.dp)
             .clickable { onClick() }){
 
-        androidx.compose.material3.Icon(painter = painter, contentDescription = null, tint = color)
+        Icon(painter = painter, contentDescription = null, tint = color)
         Spacer(modifier = Modifier.width(16.dp))
         Text(text = label, style = androidx.compose.material.MaterialTheme.typography.body2, color = color)
 
     }
 
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ModalNavigationDrawerPreview(){
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope  = rememberCoroutineScope()
+    JetpackComposeDemoTheme {
+        Surface(modifier = Modifier.fillMaxSize()){
+            Column(modifier = Modifier.fillMaxSize()) {
+                Button(onClick = {
+                    if(drawerState.isOpen){
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }else{
+                        scope.launch {
+                            drawerState.open()
+                        }
+                    }
+                }) {
+                     Text(text = "打开与关闭 Drawer")
+                }
+
+                ModalNavigationDrawer(drawerContent = {
+                    ModalDrawerSheet(drawerShape = RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp), drawerContainerColor = MaterialTheme.colorScheme.primary) {
+                        Text(text = "ModalDrawerSheet")
+                    }
+
+                }, drawerState = drawerState) {
+                    Text(text = "内容")
+                }
+            }
+
+        }
+    }
+}
+
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DismissibleNavigationDrawerPreview(){
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope  = rememberCoroutineScope()
+    JetpackComposeDemoTheme {
+        Surface(modifier = Modifier.fillMaxSize()){
+            Column(modifier = Modifier.fillMaxSize()) {
+                Button(onClick = {
+                    if(drawerState.isOpen){
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }else{
+                        scope.launch {
+                            drawerState.open()
+                        }
+                    }
+                }) {
+                    Text(text = "打开与关闭 Drawer")
+                }
+
+                DismissibleNavigationDrawer(modifier = Modifier.fillMaxSize(), drawerState = drawerState, drawerContent = {
+                    DismissibleDrawerSheet {
+                        Text(text = "DismissibleDrawerSheet")
+                    }
+                }) {
+                    Text(text = "DismissibleNavigationDrawer")
+                }
+            }
+
+        }
+    }
+}
+
+
+@Preview(name = "PermanentNavigationDrawer")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PermanentNavigationDrawerPreview(){
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope  = rememberCoroutineScope()
+    JetpackComposeDemoTheme {
+        Surface(modifier = Modifier.fillMaxSize()){
+            Column(modifier = Modifier.fillMaxSize()) {
+                Button(onClick = {
+                    if(drawerState.isOpen){
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }else{
+                        scope.launch {
+                            drawerState.open()
+                        }
+                    }
+                }) {
+                    Text(text = "打开与关闭 Drawer")
+                }
+
+                PermanentNavigationDrawer(modifier = Modifier.fillMaxSize(), drawerContent = {
+                    PermanentDrawerSheet {
+                        Text(text = "PermanentDrawerSheet")
+                    }
+                }) {
+                    Text(text = "PermanentNavigationDrawer")
+                }
+            }
+
+        }
+    }
 }

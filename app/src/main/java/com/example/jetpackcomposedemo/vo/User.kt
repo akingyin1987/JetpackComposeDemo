@@ -32,4 +32,10 @@ data class User(var name:String="", val passWord:String="",var version:Int =0){
 
         return true
     }
+
+    override fun toString(): String {
+        return "User(name='$name', passWord='$passWord', version=$version)"
+    }
+
+
 }
