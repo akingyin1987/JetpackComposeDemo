@@ -18,16 +18,20 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.TagFaces
 import androidx.compose.material3.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.DefaultAlpha
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
@@ -63,7 +67,13 @@ fun ModalBottomSheetLayoutPreview() {
                .fillMaxSize()
                .padding(it)) {
 
-               val bottomSheetState = rememberModalBottomSheetState(initialValue =ModalBottomSheetValue.Hidden )
+               val bottomSheetState = rememberModalBottomSheetState(initialValue =ModalBottomSheetValue.Hidden, confirmStateChange = {sheetValue->
+                   if(sheetValue == ModalBottomSheetValue.Hidden){
+
+                   }
+                   true
+               })
+
                val scope  = rememberCoroutineScope()
                Button(onClick = {
                    if(bottomSheetState.isVisible){
@@ -119,6 +129,15 @@ fun ModalBottomSheetLayoutPreview() {
                            },
                            modifier = Modifier.clickable {  }
                        )
+                      ListItem(headlineText = {
+                          Text(text = "简易标定", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
+                      }, supportingText = {
+                          Text(text = "简易标签详情", style = MaterialTheme.typography.bodySmall.copy(color = androidx.compose.material3.LocalContentColor.current.copy(alpha = ContentAlpha.disabled)))
+                      }, leadingContent = {
+                          Icon(imageVector = Icons.Default.TagFaces, contentDescription = null)
+                      }, trailingContent = {
+                          Icon(imageVector = Icons.Default.ArrowForwardIos, contentDescription = null)
+                      })
                    }
                }, sheetState = bottomSheetState) {
                }
