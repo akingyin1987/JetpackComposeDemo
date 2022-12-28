@@ -56,7 +56,7 @@ android {
 }
 
 dependencies {
-    def compose = "1.2.1"
+    def compose = "1.3.1"
     def compose_compiler = "1.3.0"
 
     implementation 'androidx.core:core-ktx:1.9.0'
@@ -76,6 +76,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-viewbinding:$compose")
 
 
+    implementation 'com.google.code.gson:gson:2.10'
     implementation 'androidx.compose.material3:material3:1.0.1'
     implementation("androidx.compose.material3:material3-window-size-class:1.0.1")
     implementation ("androidx.compose.material:material:$compose")
@@ -100,6 +101,7 @@ dependencies {
     //Navigation动画
     implementation "com.google.accompanist:accompanist-navigation-animation:0.26.1-alpha"
     testImplementation 'junit:junit:4.13.2'
+    testImplementation("androidx.compose.runtime:runtime:$compose")
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose"
