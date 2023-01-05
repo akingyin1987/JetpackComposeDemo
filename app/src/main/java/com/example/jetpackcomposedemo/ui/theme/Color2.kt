@@ -43,3 +43,11 @@ val gradientGreenColors = listOf(green200, green500, green700)
 val gradientRedColors = listOf(orange, tiktokRed)
 val gradientBluePurple = listOf(blue, purple)
 val instagramGradient = listOf(blue, purple, orange, yellow)
+
+
+
+val Purple500 = Color(0xFF6200EE)
+
+val Gray9A = Color(0xFF9AA0A6)
+val Dark20 = Color(0xFF202124)
+val Blue8A = Color(0xFF8AB4F8)

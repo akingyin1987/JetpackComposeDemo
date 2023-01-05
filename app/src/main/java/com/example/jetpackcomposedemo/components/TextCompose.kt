@@ -39,7 +39,7 @@ class TextCompose {
      * padding 在元素周围留出空间
      */
     @Composable
-    fun textComposeDemo() {
+    fun TextComposeDemo() {
         var text by remember { mutableStateOf("") }
 
         var clickCount by remember {
@@ -57,6 +57,8 @@ class TextCompose {
                 .border(2.dp, Color.Black, RoundedCornerShape(3.dp)), contentAlignment = Alignment.Center){
                 Text(text = "居中1", textAlign = TextAlign.Center)
             }
+            
+
 
             Column(modifier = Modifier
                 .fillMaxWidth()
@@ -224,7 +226,7 @@ class TextCompose {
 //        Column {
 //            MarqueeText(text = "这是一段很长的数据",modifier =Modifier.padding(10.dp).background(color = Color.White))
 //        }
-        textComposeDemo()
+        TextComposeDemo()
     }
 
 

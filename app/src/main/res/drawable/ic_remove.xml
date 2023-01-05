@@ -1,0 +1,12 @@
+<!--
+  ~ Copyright (c) 2023. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<vector android:height="24dp" android:viewportHeight="1024"
+    android:viewportWidth="1024" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#2C2C2C" android:pathData="M845.21,209.08H334.91c-24.47,0 -47.77,11.07 -63.5,30.29L72.18,478.21l-0.58,0.58c-6.99,9.32 -10.49,20.97 -10.49,33.2 0,12.82 4.66,25.63 12.82,36.12L271.41,785.79c15.73,18.64 39.03,29.71 63.5,29.71h510.31c44.86,0 80.97,-36.12 80.97,-80.97V290.05c0,-44.86 -36.12,-80.97 -80.97,-80.97zM684.43,623.27c-5.83,5.83 -13.4,8.74 -20.97,8.74 -8.16,0 -15.73,-2.91 -20.97,-8.74l-68.74,-68.74 -68.74,68.74c-5.83,5.83 -13.4,8.74 -20.97,8.74 -16.31,0 -29.71,-13.4 -29.71,-29.71 0,-8.16 2.91,-15.73 8.74,-20.97l68.74,-68.74 -69.32,-69.32c-11.65,-11.65 -11.65,-30.29 0,-41.94s30.29,-11.65 41.94,0l68.74,68.74 68.74,-68.74c11.65,-11.65 30.29,-11.65 41.94,0.58a29.53,29.53 0,0 1,0 41.94L615.69,512l68.74,68.74c11.65,11.65 11.65,30.87 0,42.53z"/>
+</vector>
