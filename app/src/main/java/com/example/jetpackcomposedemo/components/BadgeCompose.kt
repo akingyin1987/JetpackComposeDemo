@@ -11,7 +11,8 @@ package com.example.jetpackcomposedemo.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,21 +33,49 @@ import androidx.compose.ui.unit.dp
 @Preview
 @Composable
 fun BadgeComposePreview(){
+    var badgeNum  by remember {
+       mutableStateOf(0)
+    }
     Column(modifier = Modifier.fillMaxSize()) {
+       Box(modifier = Modifier.wrapContentWidth(), contentAlignment = Alignment.Center){
+           Button(onClick = { badgeNum++ }, shape = RoundedCornerShape(4.dp)) {
+               Text(text = "这是按钮Box")
+           }
+           Badge(modifier = Modifier.padding(5.dp).align(Alignment.TopEnd)){
+               Text(text = badgeNum.toString())
+           }
+       }
        Badge{
-           Text(text = "123")
+           Text(text =  badgeNum.toString())
        }
        Badge(containerColor = Color.Green, contentColor = Color.Black){
-           Text(text = "321")
+           Text(text =  badgeNum.toString())
        } 
+        
        BadgedBox(badge = {
-           Badge{
-               Text(text = "123")
+           Badge(modifier = Modifier
+               .padding(end = 100.dp, top = 20.dp)
+               .wrapContentWidth()){
+               Text(text =  badgeNum.toString())
            }
-       }, modifier = Modifier.wrapContentWidth().wrapContentHeight()) {
+       }, modifier = Modifier
+           .padding(top = 50.dp)
+           .wrapContentWidth()
+           .wrapContentHeight()) {
            Button(onClick = { /*TODO*/ }, shape = RoundedCornerShape(4.dp)) {
                Text(text = "这是按钮")
            }
-       } 
+       }
+
+        BadgedBox(badge = {
+            Text(text = "BadgeBox")
+        }, modifier = Modifier
+            .padding(top = 50.dp)
+            .wrapContentWidth()
+            .wrapContentHeight()) {
+            Button(onClick = { /*TODO*/ }, shape = RoundedCornerShape(4.dp)) {
+                Text(text = "BadgedBox")
+            }
+        }
     }
 }

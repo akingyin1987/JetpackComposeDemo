@@ -18,6 +18,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
+import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.filled.Work
+import androidx.compose.material.icons.filled.WorkOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -180,6 +183,32 @@ fun ButtonComposePreview2() {
                 }
                 TextButton(onClick = { /*TODO*/ },enabled = enable.value) {
                     Text(text ="TextButton" )
+                }
+                IconButton(onClick = {  }, enabled = enable.value) {
+                    Icon(imageVector = Icons.Default.Work, contentDescription = null)
+                }
+
+                IconToggleButton(checked = enable.value, onCheckedChange ={} ) {
+                    if(enable.value){
+                        Icon(imageVector = Icons.Default.Work, contentDescription = null)
+                    }else{
+                        Icon(imageVector = Icons.Default.WorkOff, contentDescription = null)
+                    }
+                }
+                FilledIconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Default.Work, contentDescription = null)
+                }
+
+                val checkState = remember {
+                    mutableStateOf(false)
+                }
+                OutlinedIconToggleButton(checked = checkState.value, onCheckedChange ={
+                    checkState.value = it
+                } ) {
+                    Row {
+                       Text(text = "已解决", color = if(enable.value) Color.Green else Color.Unspecified)
+                       Icon(imageVector = Icons.Default.ThumbUp, contentDescription = null, tint = if(enable.value) Color.Green else Color.Unspecified)
+                    }
                 }
             }
         }
