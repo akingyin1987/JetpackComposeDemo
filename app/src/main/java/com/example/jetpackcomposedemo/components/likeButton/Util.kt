@@ -32,10 +32,10 @@ import kotlin.math.PI
 @Composable
 fun DefaultContent(
     isLike: Boolean = false,
-    size: Dp = 30.dp,
+    modifier: Modifier,
 ) {
     Icon(
-        modifier = Modifier.size(size),
+        modifier = modifier,
         imageVector = Icons.Default.Favorite,
         contentDescription = "",
         tint = if (isLike) Color.Red else Color.Gray,

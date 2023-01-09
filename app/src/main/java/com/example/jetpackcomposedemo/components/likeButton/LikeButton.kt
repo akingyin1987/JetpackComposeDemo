@@ -28,34 +28,34 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Icon
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.times
+import androidx.compose.ui.unit.*
 import com.example.jetpackcomposedemo.components.likeButton.painter.drawBubble
 import com.example.jetpackcomposedemo.components.likeButton.painter.drawLikeCircle
 import kotlinx.coroutines.launch
+import kotlin.math.max
+import kotlin.math.min
 
 
 @Composable
 fun LikeButton(
     modifier: Modifier = Modifier,
     likeButtonState: LikeButtonState = rememberLikeButtonState(),
-    size: Dp = 30.dp,
+
     likeContent: @Composable (isLiked: Boolean) -> Unit = {
         DefaultContent(
             isLike = it,
-            size = size,
+            modifier = Modifier.size(30.dp),
         )
     },
-    circleSize: Dp = size * 0.8,
+
     bubblesCount: Int = 7,
     bubbleColor: BubbleColor = BubbleColor(
         dotPrimaryColor = Color(0xFFFFC107),
@@ -66,12 +66,22 @@ fun LikeButton(
     onTap: (suspend () -> Unit)? = null,
 ) {
 
+    var size  by remember {
+        mutableStateOf(30.dp)
+    }
+
+    var  circleSize by remember {
+        mutableStateOf(  size * 0.8)
+    }
+
+    val density =  LocalDensity.current
+
     val coroutineScope = rememberCoroutineScope()
     val interactionSource = remember { MutableInteractionSource() }
 
     Box(
         modifier = modifier
-            .size(size)
+            //  .size(size)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
@@ -88,7 +98,22 @@ fun LikeButton(
                     }
                 }
             }
+            .onGloballyPositioned {
+
+                density.run {
+                    min(it.size.width,it.size.height).let { maxSize->
+                        if(maxSize>0){
+                            size = (max(it.size.width,it.size.height).toFloat()/this.density).dp
+                            circleSize = size *0.8
+                        }
+
+                    }
+
+                }
+
+            }
     ) {
+
         Box(
             modifier = Modifier
                 .size(

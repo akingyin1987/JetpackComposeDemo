@@ -1,11 +1,11 @@
 package com.example.jetpackcomposedemo.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
+import androidx.compose.material3.Button
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +23,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
 
 /**
  * 文本类的组件
@@ -34,7 +36,7 @@ import androidx.compose.ui.unit.dp
  * @UpdateRemark: 更新说明
  * @Version: 1.0
  */
-class TextCompose {
+
     /**
      * padding 在元素周围留出空间
      */
@@ -221,13 +223,64 @@ class TextCompose {
 
     @Preview
     @Composable
-    fun DefaultPreview() {
+    fun TextComposePreview() {
 
 //        Column {
 //            MarqueeText(text = "这是一段很长的数据",modifier =Modifier.padding(10.dp).background(color = Color.White))
 //        }
-        TextComposeDemo()
+        //TextComposeDemo()
+
+        JetpackComposeDemoTheme {
+            val scrollState = rememberScrollState()
+            ConstraintLayout(modifier = Modifier
+                .padding(bottom = 50.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()) {
+                val (centerContent,btnBottom)=createRefs()
+                ClickableText(text = buildAnnotatedString {
+                     append("这是很长很长的文本".repeat(200))
+                } , onClick ={} , modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(state = scrollState)
+                    .constrainAs(centerContent) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(btnBottom.top, 5.dp)
+                    })
+//                Text(text = "这是很长很长的文本".repeat(200),
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .verticalScroll(state = scrollState)
+//                        .constrainAs(centerContent) {
+//                            top.linkTo(parent.top)
+//                            bottom.linkTo(btnBottom.top, 5.dp)
+//                        }
+//                )
+                Button(onClick = { /*TODO*/ },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .constrainAs(btnBottom) {
+                            top.linkTo(centerContent.bottom, 5.dp)
+                            bottom.linkTo(parent.bottom, 10.dp)
+                        }) {
+                    Text(text = "我是文本下面的按钮")
+                }
+            }
+        }
+
+//        Column(modifier = Modifier
+//            .fillMaxWidth()
+//            .wrapContentHeight()
+//            .verticalScroll(state = scrollState),
+//            verticalArrangement = Arrangement.Center) {
+//            Text(text = "这是很长很长的文本".repeat(200),
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                 //   .verticalScroll(state = rememberScrollState())
+//            )
+//            Button(onClick = { /*TODO*/ }) {
+//                Text(text = "我是文本下面的按钮")
+//            }
+//        }
     }
 
 
-}
