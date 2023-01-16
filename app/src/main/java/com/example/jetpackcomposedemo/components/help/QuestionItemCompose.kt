@@ -57,7 +57,9 @@ fun QuestionItemView(
     val scope = rememberCoroutineScope()
     val likeState = rememberLikeButtonState()
     val scrollState = rememberScrollState()
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleLarge,
@@ -70,99 +72,120 @@ fun QuestionItemView(
 //                }
         )
 
-
-        ConstraintLayout(modifier = Modifier.padding(top = 25.dp, bottom = 40.dp).fillMaxWidth()) {
-            val (centerContent,btnBottom)=createRefs()
-
-            ClickableText(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(state = scrollState)
-                    .constrainAs(centerContent) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(btnBottom.top)
-                        // height = Dimension.fillToConstraints
-
-                    },
-                style = MaterialTheme.typography.bodyMedium,
-                text = content,
-                onClick = { offset ->
-                    tags.forEach { tag ->
-                        content.getStringAnnotations(tag, start = offset, end = offset).firstOrNull()
-                            ?.let { annotation ->
-                                onClick.invoke(annotation)
-                            }
-                    }
-                })
-
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp)
-                .constrainAs(btnBottom) {
-                    top.linkTo(centerContent.bottom, 5.dp)
-                    bottom.linkTo(parent.bottom)
-                }, horizontalArrangement = Arrangement.SpaceBetween) {
-
-                LikeButton(modifier = Modifier
-                    .weight(1F)
-                    .wrapContentHeight()
-                    .padding(start = 5.dp), likeButtonState = likeState, likeContent = {
-                    OutlinedButton(onClick = {
-                        checkState = false
-                        scope.launch {
-                            if (likeState.isLiked.value) {
-                                likeState.unlike()
-                            } else {
-
-                                likeState.like(scope)
-                            }
-
+        ClickableText(
+            modifier = Modifier
+                .padding(top = 10.dp, bottom = 10.dp)
+                .weight(0.9F,false)
+                .verticalScroll(state = scrollState)
+               ,
+            style = MaterialTheme.typography.bodyMedium,
+            text = content,
+            onClick = { offset ->
+                tags.forEach { tag ->
+                    content.getStringAnnotations(tag, start = offset, end = offset).firstOrNull()
+                        ?.let { annotation ->
+                            onClick.invoke(annotation)
                         }
-                    },shape = RoundedCornerShape(4.dp)) {
-                        Icon(
-                            imageVector = Icons.Default.ThumbUp,
-                            contentDescription = null,
-                            tint = if (it) Color.Red else Color.Gray
-                        )
-                        Text(text = "问题已解决", color = if (it) Color.Red else LocalContentColor.current,modifier = Modifier.padding(start = 5.dp))
-                    }
-
-                }, onTap = {
-                    scope.launch {
-                        if (likeState.isLiked.value) {
-                            likeState.unlike()
-                        } else {
-                            checkState = false
-                            likeState.like(scope)
-                        }
-                    }
-                })
-
-                Spacer(modifier = Modifier.weight(0.5F))
-                OutlinedButton(onClick = {
-                    scope.launch {
-                        likeState.unlike()
-                    }
-                    checkState = checkState.not()
-                }, shape = RoundedCornerShape(4.dp),modifier= Modifier
-                    .weight(1F)
-                    .padding(end = 5.dp)) {
-                    Icon(
-                        imageVector = Icons.Default.ThumbDown,
-                        contentDescription = null,
-                        tint = if (checkState) Color.Red else Color.Gray
-                    )
-                    Text(
-                        text = "问题未解决",
-                        color = if (checkState) Color.Red else LocalContentColor.current,
-                        modifier = Modifier.padding(start = 5.dp)
-                    )
                 }
-
-            }
-
-
+            })
+        Button(onClick = { /*TODO*/ }) {
+            Text(text = "测试按钮")
         }
+
+
+//        ConstraintLayout(modifier = Modifier.wrapContentHeight()
+//            .fillMaxWidth()) {
+//            val (centerContent,btnBottom)=createRefs()
+//
+//            ClickableText(
+//                modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
+//                    .fillMaxWidth()
+//                    .verticalScroll(state = scrollState)
+//                    .constrainAs(centerContent) {
+//                        top.linkTo(parent.top)
+//                        bottom.linkTo(btnBottom.top)
+//                        // height = Dimension.fillToConstraints
+//
+//                    },
+//                style = MaterialTheme.typography.bodyMedium,
+//                text = content,
+//                onClick = { offset ->
+//                    tags.forEach { tag ->
+//                        content.getStringAnnotations(tag, start = offset, end = offset).firstOrNull()
+//                            ?.let { annotation ->
+//                                onClick.invoke(annotation)
+//                            }
+//                    }
+//                })
+//
+//            Row(modifier = Modifier
+//                .fillMaxWidth()
+//                .height(48.dp)
+//                .constrainAs(btnBottom) {
+//                    top.linkTo(centerContent.bottom, 5.dp)
+//                    bottom.linkTo(parent.bottom,10.dp)
+//                }, horizontalArrangement = Arrangement.SpaceBetween) {
+//
+//                LikeButton(modifier = Modifier
+//                    .weight(1F)
+//                    .wrapContentHeight()
+//                    .padding(start = 5.dp), likeButtonState = likeState, likeContent = {
+//                    OutlinedButton(onClick = {
+//                        checkState = false
+//                        scope.launch {
+//                            if (likeState.isLiked.value) {
+//                                likeState.unlike()
+//                            } else {
+//
+//                                likeState.like(scope)
+//                            }
+//
+//                        }
+//                    },shape = RoundedCornerShape(4.dp)) {
+//                        Icon(
+//                            imageVector = Icons.Default.ThumbUp,
+//                            contentDescription = null,
+//                            tint = if (it) Color.Red else Color.Gray
+//                        )
+//                        Text(text = "问题已解决", color = if (it) Color.Red else LocalContentColor.current,modifier = Modifier.padding(start = 5.dp))
+//                    }
+//
+//                }, onTap = {
+//                    scope.launch {
+//                        if (likeState.isLiked.value) {
+//                            likeState.unlike()
+//                        } else {
+//                            checkState = false
+//                            likeState.like(scope)
+//                        }
+//                    }
+//                })
+//
+//                Spacer(modifier = Modifier.weight(0.5F))
+//                OutlinedButton(onClick = {
+//                    scope.launch {
+//                        likeState.unlike()
+//                    }
+//                    checkState = checkState.not()
+//                }, shape = RoundedCornerShape(4.dp),modifier= Modifier
+//                    .weight(1F)
+//                    .padding(end = 5.dp)) {
+//                    Icon(
+//                        imageVector = Icons.Default.ThumbDown,
+//                        contentDescription = null,
+//                        tint = if (checkState) Color.Red else Color.Gray
+//                    )
+//                    Text(
+//                        text = "问题未解决",
+//                        color = if (checkState) Color.Red else LocalContentColor.current,
+//                        modifier = Modifier.padding(start = 5.dp)
+//                    )
+//                }
+//
+//            }
+//
+//
+//        }
    }
 
 
@@ -174,8 +197,8 @@ fun QuestionItemView(
 fun QuestionItemPreview() {
     QuestionItemView(title = "这是个问题".repeat(4),
         content = buildAnnotatedString {
-            append("Click 我要重重复很多数据".repeat(250))
-
+            append("Click 我要重重复很多数据".repeat(10))
+            append("<img src=\"mixture.png\" width=\"360px\"/>")
             // We attach this *URL* annotation to the following content
             // until `pop()` is called
             pushStringAnnotation(tag = "URL",

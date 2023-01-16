@@ -52,59 +52,9 @@ class MainActivity : ComponentActivity() {
 //                }, update = {
 //
 //                })
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    val chronometerState : MutableState<ChronometerState> = remember {
-                        mutableStateOf(ChronometerState.Idle)
-                    }
-                    val baseTime = remember {
-                        mutableStateOf(0L)
-                    }
-                    val stopTime = remember {
-                        mutableStateOf(0L)
-                    }
-                    val startTime = remember {
-                        mutableStateOf(0L)
-                    }
-                    val useTime = remember {
-                        mutableStateOf(0L)
-                    }
-                    AndroidChronometer(modifier = Modifier, baseTime = baseTime.value,chronometerState=chronometerState.value, chronometerOnTick ={
 
-                    } )
-                    Button(onClick = {
-                        if(chronometerState.value == ChronometerState.Start){
-                            chronometerState.value = ChronometerState.Stop
-                            stopTime.value = SystemClock.elapsedRealtime()
-                            useTime.value = useTime.value+stopTime.value-startTime.value
-                        }else{
-                            startTime.value = SystemClock.elapsedRealtime()
-                            if(useTime.value >0){
-                                baseTime.value = SystemClock.elapsedRealtime() -useTime.value
-                            }else{
-                                baseTime.value = SystemClock.elapsedRealtime()
-                            }
+                DismissibleNavigationDrawerSample()
 
-                            chronometerState.value = ChronometerState.Start
-                        }
-                    }) {
-                        Text(text = if (chronometerState.value == ChronometerState.Start) "停止" else "开始")
-                    }
-                    val  percentage = remember {
-                        mutableStateOf(0F)
-                    }
-                    LaunchedEffect(Unit ){
-                        while (true){
-                            delay(1000)
-                            percentage.value = percentage.value+1
-                            if(percentage.value >100){
-                                percentage.value
-                            }
-                        }
-                    }
-                    CircularProgressBar(percentage = percentage.value, number = 1)
-
-
-                }
             }
         }
     }
@@ -140,6 +90,64 @@ fun TopBar(appTopBarTitle:String,call:()->Unit){
 
         }
     )
+}
+
+
+@Composable
+fun ChronometerComposeView(){
+    Column(modifier = Modifier.fillMaxWidth()) {
+        val chronometerState : MutableState<ChronometerState> = remember {
+            mutableStateOf(ChronometerState.Idle)
+        }
+        val baseTime = remember {
+            mutableStateOf(0L)
+        }
+        val stopTime = remember {
+            mutableStateOf(0L)
+        }
+        val startTime = remember {
+            mutableStateOf(0L)
+        }
+        val useTime = remember {
+            mutableStateOf(0L)
+        }
+        AndroidChronometer(modifier = Modifier, baseTime = baseTime.value,chronometerState=chronometerState.value, chronometerOnTick ={
+
+        } )
+        Button(onClick = {
+            if(chronometerState.value == ChronometerState.Start){
+                chronometerState.value = ChronometerState.Stop
+                stopTime.value = SystemClock.elapsedRealtime()
+                useTime.value = useTime.value+stopTime.value-startTime.value
+            }else{
+                startTime.value = SystemClock.elapsedRealtime()
+                if(useTime.value >0){
+                    baseTime.value = SystemClock.elapsedRealtime() -useTime.value
+                }else{
+                    baseTime.value = SystemClock.elapsedRealtime()
+                }
+
+                chronometerState.value = ChronometerState.Start
+            }
+        }) {
+            Text(text = if (chronometerState.value == ChronometerState.Start) "停止" else "开始")
+        }
+        val  percentage = remember {
+            mutableStateOf(0F)
+        }
+        LaunchedEffect(Unit ){
+            while (true){
+                delay(1000)
+                percentage.value = percentage.value+1
+                if(percentage.value >100){
+                    percentage.value
+                }
+            }
+        }
+        CircularProgressBar(percentage = percentage.value, number = 1)
+
+
+    }
 }
 
 @Preview(showBackground = true)
