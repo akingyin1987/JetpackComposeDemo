@@ -8,13 +8,21 @@
 
 package com.example.jetpackcomposedemo.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.jetpackcomposedemo.R
@@ -31,9 +39,13 @@ import com.example.jetpackcomposedemo.rememberRandomSampleImageUrl
  * @Version: 1.0
  */
 
-@Preview
+
 @Composable
 fun ImageComposePreview(){
+
+
+
+
     val context  = LocalContext.current
     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -45,5 +57,25 @@ fun ImageComposePreview(){
             error = painterResource(id = R.drawable.placeholder),
             placeholder = painterResource(id = R.drawable.placeholder),
             modifier = Modifier.fillMaxSize())
+    }
+}
+
+@Preview
+@Composable
+fun ImageCompose2Preview(){
+    Column(modifier = Modifier.width(68.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+        Image(modifier = Modifier
+            .size(52.dp)
+            .border(
+                1.dp,
+                MaterialTheme.colorScheme.surfaceVariant,
+                CircleShape
+            )
+            .padding(5.dp)
+            .clip(CircleShape)
+            ,painter = painterResource(id = R.drawable.ic_baseline_account_box_24)
+            , contentScale = ContentScale.Crop
+            , contentDescription = null)
+        Text(text = "微信登录")
     }
 }

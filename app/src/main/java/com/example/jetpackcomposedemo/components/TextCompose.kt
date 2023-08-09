@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -151,7 +152,7 @@ import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
             ) {
                 //行， 即可看成横向布局
                 Text(text = buildAnnotatedString {
-                    append("我已阅读并同意")
+                    append("   我已阅读并<br>同意")
                     withStyle(
                         style = SpanStyle(
                             //设置这部分的文字颜色
@@ -238,14 +239,14 @@ import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
                 .wrapContentHeight()) {
                 val (centerContent,btnBottom)=createRefs()
                 ClickableText(text = buildAnnotatedString {
-                     append("这是很长很长的文本".repeat(200))
+                     append("   这是 /r 很长很长的\n 文本")
                 } , onClick ={} , modifier = Modifier
                     .fillMaxWidth()
                     .verticalScroll(state = scrollState)
                     .constrainAs(centerContent) {
                         top.linkTo(parent.top)
                         bottom.linkTo(btnBottom.top, 5.dp)
-                    })
+                    }, style = MaterialTheme.typography.bodyMedium.copy())
 //                Text(text = "这是很长很长的文本".repeat(200),
 //                    modifier = Modifier
 //                        .fillMaxWidth()

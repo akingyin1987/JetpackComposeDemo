@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import com.example.jetpackcomposedemo.components.likeButton.painter.drawBubble
 import com.example.jetpackcomposedemo.components.likeButton.painter.drawLikeCircle
+import com.example.jetpackcomposedemo.components.rememberUserState
 import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.math.min
@@ -69,6 +70,7 @@ fun LikeButton(
     var size  by remember {
         mutableStateOf(30.dp)
     }
+
 
     var  circleSize by remember {
         mutableStateOf(  size * 0.8)
@@ -101,10 +103,10 @@ fun LikeButton(
             .onGloballyPositioned {
 
                 density.run {
-                    min(it.size.width,it.size.height).let { maxSize->
-                        if(maxSize>0){
-                            size = (max(it.size.width,it.size.height).toFloat()/this.density).dp
-                            circleSize = size *0.8
+                    min(it.size.width, it.size.height).let { maxSize ->
+                        if (maxSize > 0) {
+                            size = (max(it.size.width, it.size.height).toFloat() / this.density).dp
+                            circleSize = size * 0.8
                         }
 
                     }

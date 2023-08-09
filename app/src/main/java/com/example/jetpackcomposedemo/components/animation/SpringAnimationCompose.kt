@@ -41,12 +41,10 @@ fun SpringAnimationScreen(){
         SpringSpec(dampingRatio = 0.1f,
             stiffness = 500f,
             visibilityThreshold = 0.01.dp)
-   var defaultTop  by remember {
-       mutableStateOf(10.dp)
-   }
-   var number by remember {
-       mutableStateOf(0)
-   }
+   var defaultTop  by remember { mutableStateOf(10.dp) }
+
+
+   var number by remember { mutableStateOf(0) }
    LaunchedEffect(number){
        if(number %2==0){
            defaultTop = 20.dp
@@ -59,7 +57,7 @@ fun SpringAnimationScreen(){
     Box(modifier = Modifier
         .fillMaxSize()
         .border(2.dp, Color.Black)){
-        println("paddingTop=${paddingTop}")
+
         Icon(imageVector = Icons.Default.Circle, contentDescription = null, modifier = Modifier
             .padding(top = paddingTop)
           )

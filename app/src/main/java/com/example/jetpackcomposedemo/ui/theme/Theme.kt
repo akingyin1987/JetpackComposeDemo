@@ -89,6 +89,9 @@ fun JetpackComposeDemoTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+
+    println("Theme")
+
     val systemUiController = rememberSystemUiController()
     DisposableEffect(systemUiController, darkTheme) {
         systemUiController.setSystemBarsColor(
