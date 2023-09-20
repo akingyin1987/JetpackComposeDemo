@@ -24,11 +24,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jetpackcomposedemo.components.*
+import com.example.jetpackcomposedemo.components.navhost.NavHostSimple
 import com.example.jetpackcomposedemo.databinding.ActivityTestAndroidViewBinding
 import com.example.jetpackcomposedemo.ui.theme.ComposeCookBookTheme
 
 import com.example.jetpackcomposedemo.ui.theme.JetpackComposeDemoTheme
 import com.example.jetpackcomposedemo.viewmodel.EditViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
 /**
@@ -37,6 +39,7 @@ import kotlinx.coroutines.delay
   任何没有副作用的编程语言，或者更确切一点，任何引用透明的编程语言
    任何有严格计算逻辑的编程语言
  */
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +56,8 @@ class MainActivity : ComponentActivity() {
 //
 //                })
 
-                DismissibleNavigationDrawerSample()
+               // DismissibleNavigationDrawerSample()
+                NavHostSimple()
 
             }
         }

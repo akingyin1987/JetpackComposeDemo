@@ -129,9 +129,9 @@ fun ModalBottomSheetLayoutPreview() {
                            },
                            modifier = Modifier.clickable {  }
                        )
-                      ListItem(headlineText = {
+                      ListItem(headlineContent = {
                           Text(text = "简易标定", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
-                      }, supportingText = {
+                      }, supportingContent = {
                           Text(text = "简易标签详情", style = MaterialTheme.typography.bodySmall.copy(color = androidx.compose.material3.LocalContentColor.current.copy(alpha = ContentAlpha.disabled)))
                       }, leadingContent = {
                           Icon(imageVector = Icons.Default.TagFaces, contentDescription = null)
