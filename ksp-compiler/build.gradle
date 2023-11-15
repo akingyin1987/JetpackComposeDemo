@@ -1,0 +1,21 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+dependencies {
+    implementation project(path: ':ksp-annotation')
+    implementation project(path: ':ksp-annotation')
+    def ksp_version = "1.9.20-1.0.14"
+    implementation "com.google.devtools.ksp:symbol-processing-api:$ksp_version"
+    // ksp "com.google.devtools.ksp:symbol-processing:$ksp_version"
+    def kotlinpoetVersion = "1.14.2"
+    implementation("com.squareup:kotlinpoet:$kotlinpoetVersion")
+    implementation("com.squareup:kotlinpoet-ksp:$kotlinpoetVersion")
+    implementation("com.squareup:kotlinpoet-metadata:$kotlinpoetVersion")
+}

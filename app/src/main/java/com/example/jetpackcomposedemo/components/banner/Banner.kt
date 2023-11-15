@@ -9,10 +9,15 @@
 package com.example.jetpackcomposedemo.components.banner
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.VerticalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,14 +32,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.VerticalPager
-import com.google.accompanist.pager.rememberPagerState
+
+
 import kotlin.math.abs
 /**
  *
@@ -47,11 +48,12 @@ import kotlin.math.abs
  * @Version: 1.0
  */
 sealed class Direction {
-    object Vertical : Direction()
-    object Horizontal : Direction()
+    data object Vertical : Direction()
+    data object Horizontal : Direction()
 }
 
-@OptIn(ExperimentalPagerApi::class)
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Banner(
     modifier: Modifier = Modifier,
@@ -59,18 +61,19 @@ fun Banner(
     loop: Boolean = false,
     direction: Direction = Direction.Horizontal,
     contentPadding: PaddingValues = PaddingValues(horizontal = 0.dp),
-    itemSpacing: Dp = 0.dp,
     reverseLayout: Boolean = false,
     state: BannerState = rememberBannerState(),
     verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
-    content: @Composable() (BannerScope.(page: Int) -> Unit),
+    content: @Composable (BannerScope.(page: Int) -> Unit),
 ) {
 
     val realCount = if (loop) Int.MAX_VALUE else count
     val startIndex = if (loop) Int.MAX_VALUE / 2 else state.initialPage
 
-    val pagerState = rememberPagerState(initialPage = startIndex)
+    val pagerState =rememberPagerState(initialPage = startIndex, pageCount = {
+        realCount
+    })
 
     val bannerScope = remember(state, startIndex, count) {
         state.pageState = pagerState
@@ -85,10 +88,8 @@ fun Banner(
     when (direction) {
         is Direction.Horizontal -> {
             HorizontalPager(
-                count = realCount,
                 state = pagerState,
                 contentPadding = contentPadding,
-                itemSpacing = itemSpacing,
                 reverseLayout = reverseLayout,
                 modifier = modifier,
                 verticalAlignment = verticalAlignment
@@ -100,10 +101,8 @@ fun Banner(
 
         is Direction.Vertical -> {
             VerticalPager(
-                count = realCount,
                 state = pagerState,
                 contentPadding = contentPadding,
-                itemSpacing = itemSpacing,
                 reverseLayout = reverseLayout,
                 modifier = modifier,
                 horizontalAlignment = horizontalAlignment
@@ -124,7 +123,7 @@ interface BannerScope {
     val showPageCount: Int
 }
 
-@ExperimentalPagerApi
+
 private class BannerScopeImpl(
     private val state: BannerState,
 ) : BannerScope {
@@ -149,22 +148,25 @@ class BannerState(
     @IntRange(from = 0) var initialPage: Int = 0,
 ) {
 
-    @OptIn(ExperimentalPagerApi::class)
+
+    @OptIn(ExperimentalFoundationApi::class)
     internal lateinit var pageState: PagerState
 
     private var _pageCount: Int by mutableStateOf(0)
 
-    @OptIn(ExperimentalPagerApi::class)
+
+    @OptIn(ExperimentalFoundationApi::class)
     val realPageCount: Int
         get() = pageState.pageCount
 
-    @OptIn(ExperimentalPagerApi::class)
+    @OptIn( ExperimentalFoundationApi::class)
     val currentPage: Int
         get() = pageState.currentPage
 
-    @OptIn(ExperimentalPagerApi::class)
+
+    @OptIn(ExperimentalFoundationApi::class)
     val currentPageOffset: Float
-        get() = pageState.currentPageOffset
+        get() = pageState.currentPageOffsetFraction
 
     @get:IntRange(from = 0)
     var showPageCount: Int
@@ -175,7 +177,7 @@ class BannerState(
             }
         }
 
-    @OptIn(ExperimentalPagerApi::class)
+    @OptIn( ExperimentalFoundationApi::class)
     suspend fun scrollToPage(
         @IntRange(from = 0) page: Int,
         @FloatRange(from = 0.0, to = 1.0) pageOffset: Float = 0f,
@@ -183,7 +185,8 @@ class BannerState(
         pageState.scrollToPage(page, pageOffset)
     }
 
-    @OptIn(ExperimentalPagerApi::class)
+
+    @OptIn(ExperimentalFoundationApi::class)
     suspend fun animateScrollToPage(
         @IntRange(from = 0) page: Int,
         @FloatRange(from = 0.0, to = 1.0) pageOffset: Float = 0f,
@@ -198,7 +201,7 @@ class BannerState(
             },
             restore = {
                 BannerState(
-                    initialPage = it as Int,
+                    initialPage = it ,
                 )
             }
         )

@@ -6,23 +6,21 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package com.example.jetpackcomposedemo
+package com.example.jetpackcomposedemo.vo
 
-import android.app.Application
-import com.example.jetpackcomposedemo.vo.TestKsp
-import dagger.hilt.android.HiltAndroidApp
+import com.example.ksp_annotation.Custom2Annotation
+import com.example.ksp_annotation.CustomAnnotation
+
 
 /**
  *
  * @author: aking <a href="mailto:akingyin@163.com">Contact me.</a>
- * @since: 2023/9/13 11:35
+ * @since: 2023/11/15 11:48
  * @version: 1.0
  */
-@HiltAndroidApp
-class App:Application() {
 
-    override fun onCreate() {
-        super.onCreate()
-        TestKsp()
-    }
+
+@CustomAnnotation(tableName = "test")
+@Custom2Annotation(path = "123")
+class TestKsp {
 }
