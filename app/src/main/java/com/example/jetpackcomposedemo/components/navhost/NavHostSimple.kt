@@ -13,13 +13,16 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,6 +47,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.example.jetpackcomposedemo.components.bottomsheet.BottomSheetMainScreen
+import com.example.jetpackcomposedemo.components.dialog.Dialog
+import com.example.jetpackcomposedemo.components.dialog.DialogDefaults
+import com.example.jetpackcomposedemo.components.dialog.DialogStateWithData
+import com.example.jetpackcomposedemo.components.dialog.DialogStyle
+import com.example.jetpackcomposedemo.components.dialog.rememberDialogState
+import com.example.jetpackcomposedemo.components.picker.WheelTextPicker
+import com.example.jetpackcomposedemo.components.swiperefresh.SwipeRefreshComponent
 import kotlin.random.Random
 
 /**
@@ -71,6 +81,9 @@ fun NavHostSimple() {
 				navController.navigateUp()
 			}
 		}
+		composable(route = "three") {
+			SwipeRefreshComponent()
+		}
 	}
 }
 
@@ -86,14 +99,24 @@ fun OnePagerCompose(navController: NavController,viewModel: NavHostViewModel= hi
 	
 	val scrollState = rememberScrollState()
 	val userState = viewModel.userState.collectAsState()
-	
+	val listDataPicker = remember {
+		List(20){
+			"index=${it}"
+		}
+	}
 	
 	var text by remember { mutableStateOf("") }
 	
 	LaunchedEffect(userState.value ){
 		text = userState.value.userName
 	}
-	
+
+	val showDialogState = rememberDialogState()
+
+	val showDialog = remember { mutableStateOf(false) }
+
+
+
 	Scaffold(
 		topBar = {
 			TopAppBar(
@@ -123,6 +146,15 @@ fun OnePagerCompose(navController: NavController,viewModel: NavHostViewModel= hi
 					Text(text = "测试")
 				}
 			)
+			Button(
+				onClick = {
+                   showDialogState.show()
+				},
+				modifier = Modifier.fillMaxWidth()
+			) {
+				Text(text = "Dialog")
+			}
+			WheelTextPicker(texts = listDataPicker, rowCount =3 )
 			listData.value.forEach { data ->
 				TextButton(onClick = {
 					viewModel.setUserName(text)
@@ -132,6 +164,18 @@ fun OnePagerCompose(navController: NavController,viewModel: NavHostViewModel= hi
 				}
 			}
 			
+		}
+
+		if(showDialogState.showing){
+			Dialog(
+				state = showDialogState,
+				title = {
+					Text(text = "提示")
+				},
+				style = DialogDefaults.styleBottomSheet()
+			){
+
+			}
 		}
 //		LazyColumn(modifier = Modifier.padding(it), verticalArrangement = Arrangement.spacedBy(4.dp)){
 //			item {

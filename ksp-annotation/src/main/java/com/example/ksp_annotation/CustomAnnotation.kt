@@ -19,4 +19,18 @@ package com.example.ksp_annotation
 @Retention(AnnotationRetention.BINARY)
  annotation class CustomAnnotation(
     val tableName: String = "",
+
+
+
+    val indices: IntArray = [],
+
+
+    val inheritSuperIndices: Boolean = false,
+
+
+    val primaryKeys: Array<String> = [],
+
+
+
+    val ignoredColumns: Array<String> = []
 )

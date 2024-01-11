@@ -9,6 +9,10 @@
 package com.example.ksp_compiler
 
 import com.example.ksp_annotation.Custom2Annotation
+import com.example.ksp_annotation.CustomAnnotation
+import com.example.ksp_annotation.CustomMeta
+import com.google.devtools.ksp.KspExperimental
+import com.google.devtools.ksp.getAnnotationsByType
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
@@ -16,10 +20,12 @@ import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.ParameterSpec
+import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.writeTo
 
@@ -45,7 +51,7 @@ class CustomSymbolProcessorProvider : SymbolProcessorProvider {
         private val options:Map<String,String>
     ):SymbolProcessor{
         companion object {
-            val CUSTOM_CLASS_NAME = Custom2Annotation::class.qualifiedName!!
+            val CUSTOM_CLASS_NAME = CustomAnnotation::class.qualifiedName!!
 
         }
 
@@ -84,14 +90,41 @@ class CustomSymbolProcessorProvider : SymbolProcessorProvider {
 
         private fun  parseCustom(elements: List<KSClassDeclaration>){
             elements.forEach {
-                 val groupClassName = "Test@Group@"
+                val customMeta = extractCustomMeta(it)
+                 val groupClassName = customMeta.tableName.ifEmpty {"Test@Group@"}
 
                 val file = FileSpec.builder(PACKAGE_OF_GENERATE_FILE,groupClassName)
                     .addType(
                         TypeSpec.classBuilder(
                             ClassName(PACKAGE_OF_GENERATE_FILE,groupClassName)
-                        ).addKdoc(WARNING_TIPS)
-                            .addFunction(FunSpec.builder("test").build())
+                        ).primaryConstructor(
+                            FunSpec.constructorBuilder()
+                                .addParameter("name",String::class)
+                                .addModifiers(KModifier.PUBLIC)
+                                .addParameter(
+                                    ParameterSpec.builder("userName2",String::class)
+                                        .build()
+                                )
+                                .build()
+                        ).addProperty(
+                            PropertySpec.builder("userName",String::class)
+                                .initializer("%S",customMeta.tableName).build()
+                        )
+                            .addKdoc(WARNING_TIPS)
+                            .addFunction(
+                                FunSpec.builder("test")
+                                    .addParameter("tableName",String::class)
+                                    .addStatement("println(%P)","Hello \$tableName")
+                                    .build()
+                            )
+                            .addFunction(
+                                FunSpec.builder("setUserInfo")
+                                    .addParameter("userName",String::class)
+                                    .addParameter("userName2",String::class)
+                                   // .addStatement("this.userName=name")
+                                   // .addStatement("this.userName2=userName2")
+                                    .build()
+                            )
                             .build()
 
 
@@ -101,6 +134,25 @@ class CustomSymbolProcessorProvider : SymbolProcessorProvider {
             }
         }
 
+
+        @OptIn(KspExperimental::class)
+        private fun extractCustomMeta(element:KSClassDeclaration):CustomMeta{
+
+
+            val qualifiedName = element.qualifiedName?.asString()
+                ?: error("local variable can not be annotated with @CustomAnnotation")
+
+            val custom = element.getAnnotationsByType(CustomAnnotation::class).firstOrNull()?: error("$qualifiedName must annotated with @CustomAnnotation ")
+
+            return  CustomMeta(
+                tableName =  custom.tableName,
+                indices = custom.indices,
+                inheritSuperIndices = custom.inheritSuperIndices,
+                primaryKeys = custom.primaryKeys,
+                ignoredColumns = custom.ignoredColumns
+            )
+
+        }
 
 
 
