@@ -199,7 +199,7 @@ private fun <T:IPickerData<T>> PickerDialog(onDismiss: () -> Unit, listSelectDat
                                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                                 ) {
                                     TextButton(
-                                        onClick = { /*TODO*/ },
+                                        onClick = {  },
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
                                         Text(text = value.toString())
